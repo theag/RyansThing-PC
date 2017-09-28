@@ -1,5 +1,5 @@
 <root>
-	<table>
+	<table main="true">
 		<name>Lost in Elfland</name>
 		<item>
 			<text>Captured by giants and forced to cook their hideous provender. Returned because </text>

@@ -15,9 +15,9 @@ public class Dice {
     
     private static final Random rand = new Random();
     
-    private final int amount;
-    private final int sides;
-    private final int modifier;
+    public final int amount;
+    public final int sides;
+    public final int modifier;
     
     public Dice(int amount, int sides, int modifier) {
         this.amount = amount;
@@ -31,6 +31,11 @@ public class Dice {
             result += rand.nextInt(sides) + 1;
         }
         return result;
+    }
+    
+    @Override
+    public String toString() {
+        return amount+"d"+sides+"+"+modifier;
     }
     
 }

@@ -17,14 +17,15 @@ public class Table {
     private static final Random rand = new Random();
     
     public final String name;
-    
+    public final boolean isMain;
     private final ArrayList<TableEntry> entries;
     
-    private String text;
+    public String text;
     private final ArrayList<String> rollon;
     
-    public Table(String name) {
+    public Table(String name, boolean isMain) {
         this.name = name;
+        this.isMain = isMain;
         entries = new ArrayList<>();
         rollon = new ArrayList<>();
     }
@@ -49,7 +50,7 @@ public class Table {
         } else {
             String rv = text;
             for(String t : rollon) {
-                rv += " <" +t +">";
+                rv += "<" +t +">";
             }
             return rv;
         }
@@ -58,6 +59,27 @@ public class Table {
     @Override
     public String toString() {
         return name;
+    }
+
+    public boolean hasItems() {
+        return !entries.isEmpty();
+    }
+
+    public TableEntry[] getEntries() {
+        TableEntry[] rv = new TableEntry[entries.size()];
+        entries.toArray(rv);
+        return rv;
+    }
+    
+    public String getRollon() {
+        String rv = "";
+        for(String t : rollon) {
+            if(rv.length() > 0) {
+                rv += ",";
+            }
+            rv += t;
+        }
+        return rv;
     }
     
 }

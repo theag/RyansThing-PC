@@ -1,5 +1,5 @@
 <root>
-	<table>
+	<table main="true">
 		<name>Disease Symptoms</name>
 		<item>
 			<text>fever</text>
