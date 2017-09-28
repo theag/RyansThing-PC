@@ -13,8 +13,6 @@ import data.Table;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
@@ -38,6 +36,8 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         log = new Log(txtLog);
+        log.addText(System.getProperty("user.home"));
+        log.addText(System.getProperty("user.dir"));
         lblLog.setText(log.getLabel());
         tables = new ArrayList<>();
         File dir = new File("Tables");
