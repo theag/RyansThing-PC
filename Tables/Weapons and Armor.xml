@@ -1,8 +1,8 @@
 <root>
-	<table>
+	<table main="true">
 		<name>Weapon</name><text>Weapon: </text><rollon>Item Quality</rollon><rollon>Weapons</rollon>
 	</table>
-	<table>
+	<table main="true">
 		<name>Armor</name><text>Armor: </text><rollon>Item Quality</rollon><rollon>Armors</rollon>
 	</table>
 	<table>

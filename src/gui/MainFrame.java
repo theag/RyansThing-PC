@@ -37,7 +37,6 @@ public class MainFrame extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         try {
             log = new Log(txtLog);
-            log.addText(MainFrame.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
             lblLog.setText(log.getLabel());
             tables = new ArrayList<>();
             File dir = new File(IniFile.getInstance().tables);
