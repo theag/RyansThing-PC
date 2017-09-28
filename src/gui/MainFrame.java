@@ -36,6 +36,7 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
+        setLocationRelativeTo(null);
         log = new Log(txtLog);
         lblLog.setText(log.getLabel());
         tables = new ArrayList<>();
