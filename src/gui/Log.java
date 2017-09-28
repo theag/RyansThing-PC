@@ -57,7 +57,7 @@ public class Log {
     
     public Log(JTextArea txtLog) {
         this.txtLog = txtLog;
-        file = new File("log-" +getToday() +"-" +getRandom() +".txt");
+        file = new File(IniFile.getInstance().logs +"log-" +getToday() +"-" +getRandom() +".txt");
     }
     
     public Log(JTextArea txtLog, File file) {

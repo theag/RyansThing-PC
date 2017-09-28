@@ -8,8 +8,6 @@ package gui;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.ini4j.Wini;
 
 /**
@@ -39,13 +37,28 @@ public class IniFile {
         }
         String sep = System.getProperty("file.separator");
         String t, l;
-        try {
-            Wini ini = new Wini(new File(running +sep +"ryansthing.ini"));
-            t = ini.get("locations", "tables");
-            l = ini.get("locations", "logs");
-        } catch (IOException ex) {
+        File f = new File(running +sep +"ryansthing.ini");
+        if(f.exists()) {
+            try {
+                Wini ini = new Wini(f);
+                t = ini.get("locations", "tables");
+                l = ini.get("locations", "logs");
+            } catch (IOException ex) {
+                t = running;
+                l = running;
+            }
+        } else {
             t = running;
             l = running;
+            try {
+                f.createNewFile();
+                Wini ini = new Wini(f);
+                ini.put("locations", "tables", t);
+                ini.put("locations", "logs", l);
+                ini.store();
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
         if(!t.endsWith(sep)) {
             t += sep;

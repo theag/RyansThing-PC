@@ -36,11 +36,9 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         log = new Log(txtLog);
-        log.addText(System.getProperty("user.home"));
-        log.addText(System.getProperty("user.dir"));
         lblLog.setText(log.getLabel());
         tables = new ArrayList<>();
-        File dir = new File("Tables");
+        File dir = new File(IniFile.getInstance().tables +"Tables");
         File[] files = dir.listFiles();
         if(files != null) {
             for(File file : files) {
