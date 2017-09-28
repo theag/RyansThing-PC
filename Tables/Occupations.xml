@@ -1,5 +1,5 @@
 <root>
-	<table main="true">
+	<table>
 		<name>Occupations</name>
 		<item>
 			<text>Alchemist, ladle (club), can of diesel</text>

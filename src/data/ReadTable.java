@@ -51,7 +51,7 @@ public class ReadTable {
             NodeList children;
             for(int i = 0; i < tableNodes.getLength(); i++)  {
                 ele = (Element)tableNodes.item(i);
-                newTable = new Table(ele.getElementsByTagName("name").item(0).getTextContent(), ele.hasAttribute("main") && ele.getAttribute("main").equalsIgnoreCase("true"));
+                newTable = new Table(ele.getElementsByTagName("name").item(0).getTextContent());
                 items = ele.getElementsByTagName("item");
                 for(int j = 0; j < items.getLength(); j++) {
                     ele = (Element)items.item(j);

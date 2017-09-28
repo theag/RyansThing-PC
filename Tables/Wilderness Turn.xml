@@ -1,5 +1,5 @@
 <root>
-	<table main="true">
+	<table>
 		<name>Wilderness Hazards</name>
 		<item>
 			<text>Encounter</text>

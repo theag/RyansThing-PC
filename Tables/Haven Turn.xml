@@ -1,5 +1,5 @@
 <root>
-	<table main="true">
+	<table>
 		<name>Haven Hazards</name>
 		<item>
 			<text>Complication (intoduce at any point during the turn)</text>
