@@ -35,32 +35,38 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
         setLocationRelativeTo(null);
-        log = new Log(txtLog);
-        lblLog.setText(log.getLabel());
-        tables = new ArrayList<>();
-        File dir = new File(IniFile.getInstance().tables +"Tables");
-        File[] files = dir.listFiles();
-        if(files != null) {
-            for(File file : files) {
-                ReadTable.read(file, tables);
+        try {
+            log = new Log(txtLog);
+            log.addText(MainFrame.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+            lblLog.setText(log.getLabel());
+            tables = new ArrayList<>();
+            File dir = new File(IniFile.getInstance().tables);
+            File[] files = dir.listFiles();
+            if(files != null) {
+                for(File file : files) {
+                    ReadTable.read(file, tables);
+                }
             }
+            lstTables.setListData(tables.toArray());
+            jc = new JournalCalendar();
+            it = new InitiativeTracker();
+            fc = new JFileChooser();
+            fc.setFileFilter(new FileFilter() {
+
+                @Override
+                public boolean accept(File f) {
+                    return f.isDirectory() || f.getName().endsWith(".txt");
+                }
+
+                @Override
+                public String getDescription() {
+                    return "Text files (*.txt)";
+                }
+            });
+        } catch(Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error: "+ex.getMessage()+"\n"+ex.getClass().getName(), "Error", JOptionPane.ERROR_MESSAGE);
+            this.setVisible(false);
         }
-        lstTables.setListData(tables.toArray());
-        jc = new JournalCalendar();
-        it = new InitiativeTracker();
-        fc = new JFileChooser();
-        fc.setFileFilter(new FileFilter() {
-
-            @Override
-            public boolean accept(File f) {
-                return f.isDirectory() || f.getName().endsWith(".txt");
-            }
-
-            @Override
-            public String getDescription() {
-                return "Text files (*.txt)";
-            }
-        });
     }
 
     /**
