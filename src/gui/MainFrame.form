@@ -305,6 +305,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Edit Table File"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditTableActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnAddTable">
       <Properties>

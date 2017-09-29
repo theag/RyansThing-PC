@@ -206,6 +206,11 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         btnEditTable.setText("Edit Table File");
+        btnEditTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditTableActionPerformed(evt);
+            }
+        });
 
         btnAddTable.setText("Add Table File");
         btnAddTable.addActionListener(new java.awt.event.ActionListener() {
@@ -447,6 +452,10 @@ public class MainFrame extends javax.swing.JFrame {
             log.addText(doRoll((Table)lst.getSelectedValue()));
         }
     }//GEN-LAST:event_lstTablesMouseClicked
+
+    private void btnEditTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditTableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEditTableActionPerformed
 
 
     /**
