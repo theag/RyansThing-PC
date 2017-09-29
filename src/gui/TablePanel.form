@@ -26,12 +26,10 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Component id="pnlType" alignment="0" max="32767" attributes="0"/>
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="cbMain" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="rbItems" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="rbTextRollon" min="-2" max="-2" attributes="0"/>
@@ -60,7 +58,6 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="cbMain" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="rbItems" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="rbTextRollon" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -82,14 +79,6 @@
     <Component class="javax.swing.JTextField" name="txtName">
       <Properties>
         <Property name="columns" type="int" value="20"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="cbMain">
-      <Properties>
-        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Main"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JRadioButton" name="rbTextRollon">

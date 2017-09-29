@@ -36,44 +36,40 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
         setLocationRelativeTo(null);
-        log = new Log(txtLog);
-        lblLog.setText(log.getLabel());
-        tables = new ArrayList<>();
-        File dir = new File(IniFile.getInstance().tables);
-        File[] files = dir.listFiles(new FilenameFilter() {
+        try {
+            log = new Log(txtLog);
+            lblLog.setText(log.getLabel());
+            tables = new ArrayList<>();
+            File dir = new File(IniFile.getInstance().tables);
+            File[] files = dir.listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
                 return name.toLowerCase().endsWith(".xml");
             }
         });
-        if(files != null) {
-            for(File file : files) {
-                ReadTable.read(file, tables);
+            if(files != null) {
+                for(File file : files) {
+                    ReadTable.read(file, tables);
+                }
             }
+            lstTables.setListData(tables.toArray());
+            jc = new JournalCalendar();
+            it = new InitiativeTracker();
+            fc = new JFileChooser();
+            fc.setFileFilter(new FileFilter() {
+                @Override
+                public boolean accept(File f) {
+                    return f.isDirectory() || f.getName().endsWith(".txt");
+                }
+                @Override
+                public String getDescription() {
+                    return "Text files (*.txt)";
+                }
+            });
+        } catch(Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error: "+ex.getMessage()+"\n"+ex.getClass().getName(), "Error", JOptionPane.ERROR_MESSAGE);
+            this.setVisible(false);
         }
-        lstSecondaryTables.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lstTablesMouseClicked(evt);
-            }
-        });
-        lstMainTables.setListData(getMain(tables));
-        lstSecondaryTables.setListData(getSecondary(tables));
-        jc = new JournalCalendar();
-        it = new InitiativeTracker();
-        fc = new JFileChooser();
-        fc.setFileFilter(new FileFilter() {
-
-            @Override
-            public boolean accept(File f) {
-                return f.isDirectory() || f.getName().endsWith(".txt");
-            }
-
-            @Override
-            public String getDescription() {
-                return "Text files (*.txt)";
-            }
-        });
     }
 
     /**
@@ -236,6 +232,11 @@ public class MainFrame extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
+        lstTables.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lstTablesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(lstTables);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -254,7 +255,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 611, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 560, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblLog)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -350,8 +351,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void txtTableSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTableSearchActionPerformed
         if(txtTableSearch.getText().isEmpty()) {
-            lstMainTables.setListData(getMain(tables));
-            lstSecondaryTables.setListData(getSecondary(tables));
+            lstTables.setListData(tables.toArray());
         } else {
             ArrayList<Table> search = new ArrayList<>();
             String searchText = txtTableSearch.getText().toLowerCase();
@@ -360,8 +360,7 @@ public class MainFrame extends javax.swing.JFrame {
                     search.add(t);
                 }
             }
-            lstMainTables.setListData(getMain(search));
-            lstSecondaryTables.setListData(getSecondary(search));
+            lstTables.setListData(search.toArray());
         }
     }//GEN-LAST:event_txtTableSearchActionPerformed
 
@@ -453,6 +452,14 @@ public class MainFrame extends javax.swing.JFrame {
         TableDialog.showDialog(this, null);
     }//GEN-LAST:event_btnAddTableActionPerformed
 
+    private void lstTablesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lstTablesMouseClicked
+        if(evt.getClickCount() == 2) {
+            javax.swing.JList lst = (javax.swing.JList)evt.getSource();
+            log.addText(doRoll((Table)lst.getSelectedValue()));
+        }
+    }//GEN-LAST:event_lstTablesMouseClicked
+
+
     /**
      * @param args the command line arguments
      */
@@ -538,37 +545,4 @@ public class MainFrame extends javax.swing.JFrame {
         return result;
     }
 
-    private Table[] getMain(ArrayList<Table> tblList) {
-        int count = 0;
-        for(Table t : tblList) {
-            if(t.isMain) {
-                count++;
-            }
-        }
-        Table[] rv = new Table[count];
-        count = 0;
-        for(Table t : tblList) {
-            if(t.isMain) {
-                rv[count++] = t;
-            }
-        }
-        return rv;
-    }
-
-    private Table[] getSecondary(ArrayList<Table> tblList) {
-        int count = 0;
-        for(Table t : tblList) {
-            if(!t.isMain) {
-                count++;
-            }
-        }
-        Table[] rv = new Table[count];
-        count = 0;
-        for(Table t : tblList) {
-            if(!t.isMain) {
-                rv[count++] = t;
-            }
-        }
-        return rv;
-    }
 }

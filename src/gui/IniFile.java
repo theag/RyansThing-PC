@@ -35,7 +35,9 @@ public class IniFile {
         } catch (URISyntaxException ex) {
             throw new RuntimeException("Couldn't get running directory: " +ex.getMessage());
         }
-        String sep = System.getProperty("file.separator");
+        String sep = "/";
+        int index = running.lastIndexOf(sep);
+        running = running.substring(0, index);
         String t, l;
         File f = new File(running +sep +"ryansthing.ini");
         if(f.exists()) {

@@ -30,7 +30,6 @@ public class TablePanel extends javax.swing.JPanel {
         });
         if(tbl != null) {
             txtName.setText(tbl.name);
-            cbMain.setSelected(tbl.isMain);
             if(tbl.hasItems()) {
                 current = new ItemsPanel(tbl.getEntries());
             } else {
@@ -56,7 +55,6 @@ public class TablePanel extends javax.swing.JPanel {
         rbgType = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         txtName = new javax.swing.JTextField();
-        cbMain = new javax.swing.JCheckBox();
         rbTextRollon = new javax.swing.JRadioButton();
         rbItems = new javax.swing.JRadioButton();
         pnlType = new javax.swing.JPanel();
@@ -68,9 +66,6 @@ public class TablePanel extends javax.swing.JPanel {
         jLabel1.setText("Name:");
 
         txtName.setColumns(20);
-
-        cbMain.setBackground(new java.awt.Color(255, 255, 255));
-        cbMain.setText("Main");
 
         rbTextRollon.setBackground(new java.awt.Color(255, 255, 255));
         rbgType.add(rbTextRollon);
@@ -122,8 +117,6 @@ public class TablePanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(cbMain)
-                        .addGap(18, 18, 18)
                         .addComponent(rbItems)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(rbTextRollon))
@@ -146,7 +139,6 @@ public class TablePanel extends javax.swing.JPanel {
                     .addComponent(btnUpdateTab))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbMain)
                     .addComponent(rbItems)
                     .addComponent(rbTextRollon))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -190,7 +182,6 @@ public class TablePanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDeleteTable;
     private javax.swing.JButton btnUpdateTab;
-    private javax.swing.JCheckBox cbMain;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel pnlType;
     private javax.swing.JRadioButton rbItems;
