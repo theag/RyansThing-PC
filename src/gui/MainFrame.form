@@ -40,11 +40,15 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane2" pref="560" max="32767" attributes="0"/>
+                          <Component id="jScrollPane2" alignment="0" pref="560" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="lblLog" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
+                              <Component id="btnNewLog" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Component id="btnLoadLog" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="btnCleanUp" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -150,6 +154,8 @@
                   <Component id="lblLog" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnEditTable" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnAddTable" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnCleanUp" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnNewLog" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
           </Group>
@@ -342,5 +348,21 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JButton" name="btnCleanUp">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Clean Up Logs"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCleanUpActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnNewLog">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="New Log"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNewLogActionPerformed"/>
+      </Events>
+    </Component>
   </SubComponents>
 </Form>

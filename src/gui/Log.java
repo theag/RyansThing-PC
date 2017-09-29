@@ -97,19 +97,25 @@ public class Log {
     }
     
     public void save() {
-         try {
-            PrintWriter outFile = new PrintWriter(file);
-            outFile.println(getFixedText());
-            outFile.close();
-        } catch (IOException ex) {
-            ex.printStackTrace(System.out);
-            System.out.println(ex.getLocalizedMessage());
-            JOptionPane.showMessageDialog(null, "Error saving log.", "Error", JOptionPane.ERROR_MESSAGE);
+        if(!txtLog.getText().trim().isEmpty()) {
+            try {
+                PrintWriter outFile = new PrintWriter(file);
+                outFile.println(getFixedText());
+                outFile.close();
+            } catch (IOException ex) {
+                ex.printStackTrace(System.out);
+                System.out.println(ex.getLocalizedMessage());
+                JOptionPane.showMessageDialog(null, "Error saving log.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
     private String getFixedText() {
         return txtLog.getText().replace("\n", newLine);
+    }
+
+    public String getFilename() {
+        return file.getName();
     }
            
 }

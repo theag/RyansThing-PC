@@ -20,7 +20,7 @@ public class MakeIniFileWindows {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws URISyntaxException, IOException {
+    public static void main(String[] args) throws IOException, URISyntaxException {
         String running = MainFrame.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
         int i = running.indexOf("RyansThing");
         String t = running.substring(0, i+11) +"Tables/";
