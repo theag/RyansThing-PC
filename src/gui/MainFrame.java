@@ -107,11 +107,8 @@ public class MainFrame extends javax.swing.JFrame {
         btnLoadLog = new javax.swing.JButton();
         btnEditTable = new javax.swing.JButton();
         btnAddTable = new javax.swing.JButton();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        lstMainTables = new javax.swing.JList();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        lstSecondaryTables = new javax.swing.JList();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        lstTables = new javax.swing.JList();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -234,30 +231,12 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        lstMainTables.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        lstMainTables.setModel(new javax.swing.AbstractListModel() {
+        lstTables.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        lstMainTables.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lstTablesMouseClicked(evt);
-            }
-        });
-        jScrollPane3.setViewportView(lstMainTables);
-
-        jTabbedPane1.addTab("Main", jScrollPane3);
-
-        lstSecondaryTables.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        lstSecondaryTables.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane4.setViewportView(lstSecondaryTables);
-
-        jTabbedPane1.addTab("Secondary", jScrollPane4);
+        jScrollPane1.setViewportView(lstTables);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -270,7 +249,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(btnEditTable)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAddTable))
-                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -320,7 +299,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(txtTableSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTabbedPane1))
+                        .addComponent(jScrollPane1))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -470,13 +449,6 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnLoadLogActionPerformed
 
-    private void lstTablesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lstTablesMouseClicked
-        if(evt.getClickCount() == 2) {
-            javax.swing.JList lst = (javax.swing.JList)evt.getSource();
-            log.addText(doRoll((Table)lst.getSelectedValue()));
-        }
-    }//GEN-LAST:event_lstTablesMouseClicked
-
     private void btnAddTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddTableActionPerformed
         TableDialog.showDialog(this, null);
     }//GEN-LAST:event_btnAddTableActionPerformed
@@ -536,13 +508,10 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblLog;
-    private javax.swing.JList lstMainTables;
-    private javax.swing.JList lstSecondaryTables;
+    private javax.swing.JList lstTables;
     private javax.swing.JTextArea txtLog;
     private javax.swing.JTextField txtTableSearch;
     // End of variables declaration//GEN-END:variables
