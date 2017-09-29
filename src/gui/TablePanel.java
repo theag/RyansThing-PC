@@ -6,6 +6,7 @@
 package gui;
 
 import data.Table;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -21,6 +22,12 @@ public class TablePanel extends javax.swing.JPanel {
      */
     public TablePanel(Table tbl) {
         initComponents();
+        rbTextRollon.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbgTypeActionPerformed(evt);
+            }
+        });
         if(tbl != null) {
             txtName.setText(tbl.name);
             cbMain.setSelected(tbl.isMain);
@@ -33,6 +40,7 @@ public class TablePanel extends javax.swing.JPanel {
         } else {
             current = new ItemsPanel(null);
         }
+        System.out.println(current.getName());
         pnlType.add(current);
     }
 
@@ -52,19 +60,33 @@ public class TablePanel extends javax.swing.JPanel {
         rbTextRollon = new javax.swing.JRadioButton();
         rbItems = new javax.swing.JRadioButton();
         pnlType = new javax.swing.JPanel();
+        btnUpdateTab = new javax.swing.JButton();
+        btnDeleteTable = new javax.swing.JButton();
+
+        setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setText("Name:");
 
         txtName.setColumns(20);
 
+        cbMain.setBackground(new java.awt.Color(255, 255, 255));
         cbMain.setText("Main");
 
+        rbTextRollon.setBackground(new java.awt.Color(255, 255, 255));
         rbgType.add(rbTextRollon);
         rbTextRollon.setText("Text & Rollon");
 
+        rbItems.setBackground(new java.awt.Color(255, 255, 255));
         rbgType.add(rbItems);
         rbItems.setSelected(true);
         rbItems.setText("Items");
+        rbItems.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbgTypeActionPerformed(evt);
+            }
+        });
+
+        pnlType.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout pnlTypeLayout = new javax.swing.GroupLayout(pnlType);
         pnlType.setLayout(pnlTypeLayout);
@@ -74,13 +96,28 @@ public class TablePanel extends javax.swing.JPanel {
         );
         pnlTypeLayout.setVerticalGroup(
             pnlTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 349, Short.MAX_VALUE)
+            .addGap(0, 304, Short.MAX_VALUE)
         );
+
+        btnUpdateTab.setText("Update Tab");
+        btnUpdateTab.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateTabActionPerformed(evt);
+            }
+        });
+
+        btnDeleteTable.setText("Delete Table");
+        btnDeleteTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteTableActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -93,9 +130,11 @@ public class TablePanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(270, Short.MAX_VALUE))
-            .addComponent(pnlType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnUpdateTab))
+                    .addComponent(btnDeleteTable))
+                .addContainerGap(183, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -103,19 +142,54 @@ public class TablePanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnUpdateTab))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbMain)
                     .addComponent(rbItems)
                     .addComponent(rbTextRollon))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pnlType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(pnlType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnDeleteTable)
+                .addContainerGap(13, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void rbgTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbgTypeActionPerformed
+        if(rbgType.getSelection().getActionCommand().compareTo(rbItems.getActionCommand()) == 0) {
+            
+        } else if(rbgType.getSelection().getActionCommand().compareTo(rbTextRollon.getActionCommand()) == 0) {
+            
+        }
+    }//GEN-LAST:event_rbgTypeActionPerformed
+
+    private void btnUpdateTabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateTabActionPerformed
+        String name = txtName.getText().trim();
+        if(name.isEmpty()) {
+            name = "New Table";
+        }
+        TablePanelListener[] listeners = listenerList.getListeners(TablePanelListener.class);
+        for(TablePanelListener listener : listeners) {
+            listener.nameChanged(name);
+        }
+    }//GEN-LAST:event_btnUpdateTabActionPerformed
+
+    private void btnDeleteTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteTableActionPerformed
+        int result = JOptionPane.showConfirmDialog(this.getParent(), "Are you sure you wish to delete this table?\nIt cannot be undone.", "Delete", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if(result == JOptionPane.YES_OPTION) {
+            TablePanelListener[] listeners = listenerList.getListeners(TablePanelListener.class);
+            for(TablePanelListener listener : listeners) {
+                listener.removeMe();
+            }
+        }
+    }//GEN-LAST:event_btnDeleteTableActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDeleteTable;
+    private javax.swing.JButton btnUpdateTab;
     private javax.swing.JCheckBox cbMain;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel pnlType;
@@ -124,4 +198,8 @@ public class TablePanel extends javax.swing.JPanel {
     private javax.swing.ButtonGroup rbgType;
     private javax.swing.JTextField txtName;
     // End of variables declaration//GEN-END:variables
+
+    public void addTablePanelListener(TablePanelListener listener) {
+        listenerList.add(TablePanelListener.class, listener);
+    }
 }

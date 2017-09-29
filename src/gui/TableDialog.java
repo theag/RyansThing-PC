@@ -6,16 +6,39 @@
 
 package gui;
 
+import java.io.File;
+
 /**
  *
  * @author nbp184
  */
 public class TableDialog extends javax.swing.JDialog {
 
-    /** Creates new form TableDialog */
-    public TableDialog(java.awt.Frame parent) {
+    public static boolean showDialog(java.awt.Frame parent, File file) {
+        TableDialog td = new TableDialog(parent);
+        if(file == null) {
+            td.btnAddTableActionPerformed(null);
+            td.setTitle("New Table File");
+        } else {
+            td.setTitle("Editing: " +file.getName().replace(".xml", ""));
+        }
+        td.setVisible(true);
+        if(td.saved) {
+            //do saving here
+        }
+        return td.saved;
+    }
+    
+    private boolean saved;
+    
+    /** Creates new form TableDialog
+     * @param parent
+     * @param file */
+    private TableDialog(java.awt.Frame parent) {
         super(parent, true);
         initComponents();
+        setLocationRelativeTo(parent);
+        saved = false;
     }
 
     /** This method is called from within the constructor to
@@ -28,11 +51,30 @@ public class TableDialog extends javax.swing.JDialog {
     private void initComponents() {
 
         tabsMain = new javax.swing.JTabbedPane();
-        jButton1 = new javax.swing.JButton();
+        btnAddTable = new javax.swing.JButton();
+        btnSave = new javax.swing.JButton();
+        btnCancel = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        btnAddTable.setText("Add Table");
+        btnAddTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddTableActionPerformed(evt);
+            }
+        });
 
-        jButton1.setText("Add Table");
+        btnSave.setText("Save");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+
+        btnCancel.setText("Cancel");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -41,24 +83,68 @@ public class TableDialog extends javax.swing.JDialog {
             .addComponent(tabsMain)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1)
-                .addContainerGap(425, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnAddTable)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnSave)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCancel)))
+                .addContainerGap(378, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
-                .addComponent(tabsMain, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btnAddTable)
+                .addGap(18, 18, 18)
+                .addComponent(tabsMain, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSave)
+                    .addComponent(btnCancel))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnAddTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddTableActionPerformed
+        TablePanel tp = new TablePanel(null);
+        tp.addTablePanelListener(new TablePanelListener() {
+            @Override
+            public void nameChanged(String name) {
+                tpNameChanged(name);
+            }
+            @Override
+            public void removeMe() {
+                tpRemoveMe();
+            }
+        });
+        tabsMain.add("New Table", tp);
+    }//GEN-LAST:event_btnAddTableActionPerformed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        saved = true;
+        setVisible(false);
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        setVisible(false);
+    }//GEN-LAST:event_btnCancelActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnAddTable;
+    private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnSave;
     private javax.swing.JTabbedPane tabsMain;
     // End of variables declaration//GEN-END:variables
+
+    private void tpNameChanged(String name) {
+        tabsMain.setTitleAt(tabsMain.getSelectedIndex(), name);
+    }
+    
+    private void tpRemoveMe() {
+        tabsMain.remove(tabsMain.getSelectedIndex());
+    }
 
 }

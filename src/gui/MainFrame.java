@@ -11,6 +11,7 @@ import data.LogLoad;
 import data.ReadTable;
 import data.Table;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
@@ -39,7 +40,12 @@ public class MainFrame extends javax.swing.JFrame {
         lblLog.setText(log.getLabel());
         tables = new ArrayList<>();
         File dir = new File(IniFile.getInstance().tables);
-        File[] files = dir.listFiles();
+        File[] files = dir.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.toLowerCase().endsWith(".xml");
+            }
+        });
         if(files != null) {
             for(File file : files) {
                 ReadTable.read(file, tables);
@@ -222,6 +228,11 @@ public class MainFrame extends javax.swing.JFrame {
         btnEditTable.setText("Edit Table File");
 
         btnAddTable.setText("Add Table File");
+        btnAddTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddTableActionPerformed(evt);
+            }
+        });
 
         lstMainTables.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         lstMainTables.setModel(new javax.swing.AbstractListModel() {
@@ -465,6 +476,10 @@ public class MainFrame extends javax.swing.JFrame {
             log.addText(doRoll((Table)lst.getSelectedValue()));
         }
     }//GEN-LAST:event_lstTablesMouseClicked
+
+    private void btnAddTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddTableActionPerformed
+        TableDialog.showDialog(this, null);
+    }//GEN-LAST:event_btnAddTableActionPerformed
 
     /**
      * @param args the command line arguments
