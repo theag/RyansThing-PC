@@ -33,6 +33,14 @@ public class MakeIniFileWindows {
         ini.put("locations", "tables", t);
         ini.put("locations", "logs", l);
         ini.store();
+        f = new File(l, "dist/ryansthing.ini");
+        if(!f.exists()) {
+            f.createNewFile();
+        }
+        ini = new Wini(f);
+        ini.put("locations", "tables", t);
+        ini.put("locations", "logs", l+"dist/");
+        ini.store();
     }
     
 }
