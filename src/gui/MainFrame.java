@@ -49,7 +49,7 @@ public class MainFrame extends javax.swing.JFrame {
             lstTables.setListData(tables.toArray());
             jc = new JournalCalendar();
             it = new InitiativeTracker();
-            fc = new JFileChooser();
+            fc = new JFileChooser(new File(IniFile.getInstance().logs));
             fc.setFileFilter(new FileFilter() {
 
                 @Override
@@ -62,6 +62,7 @@ public class MainFrame extends javax.swing.JFrame {
                     return "Text files (*.txt)";
                 }
             });
+            
         } catch(Exception ex) {
             JOptionPane.showMessageDialog(null, "Error: "+ex.getMessage()+"\n"+ex.getClass().getName(), "Error", JOptionPane.ERROR_MESSAGE);
             this.setVisible(false);
@@ -99,6 +100,8 @@ public class MainFrame extends javax.swing.JFrame {
         btnLoadLog = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         lstTables = new javax.swing.JList();
+        btnCleanUp = new javax.swing.JButton();
+        btnNewLog = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -224,6 +227,20 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(lstTables);
 
+        btnCleanUp.setText("Clean Up Logs");
+        btnCleanUp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCleanUpActionPerformed(evt);
+            }
+        });
+
+        btnNewLog.setText("New Log");
+        btnNewLog.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewLogActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -240,7 +257,11 @@ public class MainFrame extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblLog)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnLoadLog)))
+                                .addComponent(btnNewLog)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnLoadLog)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnCleanUp)))
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -311,7 +332,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLoadLog)
-                    .addComponent(lblLog))
+                    .addComponent(lblLog)
+                    .addComponent(btnCleanUp)
+                    .addComponent(btnNewLog))
                 .addGap(6, 6, 6))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(txtTableSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -432,6 +455,16 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_lstTablesMouseClicked
 
+    private void btnCleanUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCleanUpActionPerformed
+        CleanUpDialog.showDialog(this, log.getFilename());
+    }//GEN-LAST:event_btnCleanUpActionPerformed
+
+    private void btnNewLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewLogActionPerformed
+        log.save();
+        log = new Log(txtLog);
+        lblLog.setText(log.getLabel());
+    }//GEN-LAST:event_btnNewLogActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -476,10 +509,12 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnAddSeason;
     private javax.swing.JButton btnAddWeek;
     private javax.swing.JButton btnAddYear;
+    private javax.swing.JButton btnCleanUp;
     private javax.swing.JButton btnCurrentRoundTurn;
     private javax.swing.JButton btnCurrentTime;
     private javax.swing.JButton btnDunTurn;
     private javax.swing.JButton btnLoadLog;
+    private javax.swing.JButton btnNewLog;
     private javax.swing.JButton btnWildTurn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
