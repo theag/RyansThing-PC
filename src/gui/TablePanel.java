@@ -6,6 +6,8 @@
 package gui;
 
 import data.Table;
+import data.TableEntry;
+import java.awt.BorderLayout;
 import javax.swing.JOptionPane;
 
 /**
@@ -32,15 +34,18 @@ public class TablePanel extends javax.swing.JPanel {
             txtName.setText(tbl.name);
             if(tbl.hasItems()) {
                 current = new ItemsPanel(tbl.getEntries());
+                current.setName("items");
             } else {
                 rbTextRollon.setSelected(true);
                 current = new TextRollonPanel(tbl.text, tbl.getRollon());
+                current.setName("textrollon");
             }
         } else {
             current = new ItemsPanel(null);
+            current.setName("items");
         }
-        System.out.println(current.getName());
-        pnlType.add(current);
+        pnlType.setLayout(new BorderLayout());
+        pnlType.add(current, BorderLayout.CENTER);
     }
 
     /**
@@ -91,7 +96,7 @@ public class TablePanel extends javax.swing.JPanel {
         );
         pnlTypeLayout.setVerticalGroup(
             pnlTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 304, Short.MAX_VALUE)
+            .addGap(0, 393, Short.MAX_VALUE)
         );
 
         btnUpdateTab.setText("Update Tab");
@@ -143,17 +148,27 @@ public class TablePanel extends javax.swing.JPanel {
                     .addComponent(rbTextRollon))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pnlType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(btnDeleteTable)
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void rbgTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbgTypeActionPerformed
-        if(rbgType.getSelection().getActionCommand().compareTo(rbItems.getActionCommand()) == 0) {
-            
-        } else if(rbgType.getSelection().getActionCommand().compareTo(rbTextRollon.getActionCommand()) == 0) {
-            
+        if(rbItems.isSelected() && current.getName().compareTo("items") != 0) {
+            pnlType.remove(current);
+            current = new ItemsPanel(null);
+            current.setName("items");
+            pnlType.add(current, BorderLayout.CENTER);
+            pnlType.validate();
+            pnlType.repaint();
+        } else if(rbTextRollon.isSelected() && current.getName().compareTo("textrollon") != 0) {
+            pnlType.remove(current);
+            current = new TextRollonPanel(null, null);
+            current.setName("textrollon");
+            pnlType.add(current, BorderLayout.CENTER);
+            pnlType.validate();
+            pnlType.repaint();
         }
     }//GEN-LAST:event_rbgTypeActionPerformed
 
@@ -192,5 +207,22 @@ public class TablePanel extends javax.swing.JPanel {
 
     public void addTablePanelListener(TablePanelListener listener) {
         listenerList.add(TablePanelListener.class, listener);
+    }
+
+    Table getTable() {
+        Table rv = new Table(txtName.getText().trim());
+        if(rbItems.isSelected()) {
+            ItemsPanel ip = (ItemsPanel)current;
+            for(TableEntry te : ip.items) {
+                rv.addEntry(te, 1);
+            }
+        } else if(rbTextRollon.isSelected()) {
+            TextRollonPanel trp = (TextRollonPanel)current;
+            rv.text = trp.getTableText();
+            for(String s : trp.rollon) {
+                rv.addRollon(s);
+            }
+        }
+        return rv;
     }
 }

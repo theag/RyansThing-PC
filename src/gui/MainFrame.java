@@ -39,20 +39,7 @@ public class MainFrame extends javax.swing.JFrame {
         try {
             log = new Log(txtLog);
             lblLog.setText(log.getLabel());
-            tables = new ArrayList<>();
-            File dir = new File(IniFile.getInstance().tables);
-            File[] files = dir.listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                return name.toLowerCase().endsWith(".xml");
-            }
-        });
-            if(files != null) {
-                for(File file : files) {
-                    ReadTable.read(file, tables);
-                }
-            }
-            lstTables.setListData(tables.toArray());
+            loadTables();
             jc = new JournalCalendar();
             it = new InitiativeTracker();
             fc = new JFileChooser();
@@ -449,7 +436,9 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLoadLogActionPerformed
 
     private void btnAddTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddTableActionPerformed
-        TableDialog.showDialog(this, null);
+        if(TableDialog.showDialog(this, null)) {
+            loadTables();
+        }
     }//GEN-LAST:event_btnAddTableActionPerformed
 
     private void lstTablesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lstTablesMouseClicked
@@ -543,6 +532,23 @@ public class MainFrame extends javax.swing.JFrame {
             }
         }
         return result;
+    }
+
+    private void loadTables() {
+        tables = new ArrayList<>();
+        File dir = new File(IniFile.getInstance().tables);
+        File[] files = dir.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.toLowerCase().endsWith(".xml");
+            }
+        });
+        if(files != null) {
+            for(File file : files) {
+                ReadTable.read(file, tables);
+            }
+        }
+        lstTables.setListData(tables.toArray());
     }
 
 }

@@ -16,7 +16,7 @@ import java.util.HashMap;
  */
 public class ItemsPanel extends javax.swing.JPanel {
 
-    private final ArrayList<TableEntry> items;
+    final ArrayList<TableEntry> items;
     
     /**
      * Creates new form ItemPanels
@@ -69,6 +69,8 @@ public class ItemsPanel extends javax.swing.JPanel {
         txtAppears = new javax.swing.JTextField();
         btnClear = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(255, 255, 255));
+
         lstItems.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 lstItemsValueChanged(evt);
@@ -97,14 +99,19 @@ public class ItemsPanel extends javax.swing.JPanel {
             }
         });
 
+        cbText.setBackground(new java.awt.Color(255, 255, 255));
         cbText.setText("text");
 
+        cbRollon.setBackground(new java.awt.Color(255, 255, 255));
         cbRollon.setText("roll on");
 
+        cbDice.setBackground(new java.awt.Color(255, 255, 255));
         cbDice.setText("dice");
 
+        cbUnit.setBackground(new java.awt.Color(255, 255, 255));
         cbUnit.setText("unit");
 
+        cbAppears.setBackground(new java.awt.Color(255, 255, 255));
         cbAppears.setText("appears");
 
         txtAmount.setColumns(3);
@@ -254,86 +261,97 @@ public class ItemsPanel extends javax.swing.JPanel {
         if(cbAppears.isSelected()) {
             entry.appears = Integer.parseInt(txtAppears.getText());
         }
+        items.add(entry);
+        lstItems.setListData(items.toArray());
+        btnClearActionPerformed(null);
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        TableEntry entry = (TableEntry)lstItems.getSelectedValue();
-        if(cbText.isSelected()) {
-            entry.text = txtText.getText();
-        } else {
-            entry.text = null;
+        if(lstItems.getSelectedIndex() >= 0) {
+            TableEntry entry = (TableEntry)lstItems.getSelectedValue();
+            if(cbText.isSelected()) {
+                entry.text = txtText.getText();
+            } else {
+                entry.text = null;
+            }
+            if(cbRollon.isSelected()) {
+                entry.rollon = txtRollon.getText();
+            } else {
+                entry.rollon = null;
+            }
+            if(cbDice.isSelected()) {
+                entry.die = new Dice(Integer.parseInt(txtAmount.getText()),
+                    Integer.parseInt(txtSides.getText()),
+                    Integer.parseInt(txtModifier.getText()));
+            } else {
+                entry.die = null;
+            }
+            if(cbUnit.isSelected()) {
+                entry.unit = txtUnit.getText();
+            } else {
+                entry.unit = null;
+            }
+            if(cbAppears.isSelected()) {
+                entry.appears = Integer.parseInt(txtAppears.getText());
+            } else {
+                entry.appears = 1;
+            }
+            lstItems.setListData(items.toArray());
         }
-        if(cbRollon.isSelected()) {
-            entry.rollon = txtRollon.getText();
-        } else {
-            entry.rollon = null;
-        }
-        if(cbDice.isSelected()) {
-            entry.die = new Dice(Integer.parseInt(txtAmount.getText()),
-                Integer.parseInt(txtSides.getText()),
-                Integer.parseInt(txtModifier.getText()));
-        } else {
-            entry.die = null;
-        }
-        if(cbUnit.isSelected()) {
-            entry.unit = txtUnit.getText();
-        } else {
-            entry.unit = null;
-        }
-        if(cbAppears.isSelected()) {
-            entry.appears = Integer.parseInt(txtAppears.getText());
-        } else {
-            entry.appears = 1;
-        }
-        lstItems.invalidate();
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
-        TableEntry entry = (TableEntry)lstItems.getSelectedValue();
-        items.remove(entry);
-        lstItems.setListData(items.toArray());
+        if(lstItems.getSelectedIndex() >= 0) {
+            TableEntry entry = (TableEntry)lstItems.getSelectedValue();
+            items.remove(entry);
+            lstItems.setListData(items.toArray());
+        }
     }//GEN-LAST:event_btnRemoveActionPerformed
 
     private void lstItemsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstItemsValueChanged
         TableEntry entry = (TableEntry)lstItems.getSelectedValue();
-        if(entry.text == null) {
-            cbText.setSelected(false);
-            txtText.setText("");
+        if(entry != null) {
+            if(entry.text == null) {
+                cbText.setSelected(false);
+                txtText.setText("");
+            } else {
+                cbText.setSelected(true);
+                txtText.setText(entry.text);
+            }
+            if(entry.rollon == null) {
+                cbRollon.setSelected(false);
+                txtRollon.setText("");
+            } else {
+                cbRollon.setSelected(true);
+                txtRollon.setText(entry.rollon);
+            }
+            if(entry.die == null) {
+                cbDice.setSelected(false);
+                txtAmount.setText("1");
+                txtSides.setText("1");
+                txtModifier.setText("0");
+            } else {
+                cbDice.setSelected(true);
+                txtAmount.setText(""+entry.die.amount);
+                txtSides.setText(""+entry.die.sides);
+                txtModifier.setText(""+entry.die.modifier);
+            }
+            if(entry.unit == null) {
+                cbUnit.setSelected(false);
+                txtUnit.setText("");
+            } else {
+                cbUnit.setSelected(true);
+                txtUnit.setText(entry.unit);
+            }
+            if(entry.appears == 1) {
+                cbAppears.setSelected(false);
+                txtAppears.setText("");
+            } else {
+                cbAppears.setSelected(true);
+                txtAppears.setText(""+entry.appears);
+            }
         } else {
-            cbText.setSelected(true);
-            txtText.setText(entry.text);
-        }
-        if(entry.rollon == null) {
-            cbRollon.setSelected(false);
-            txtRollon.setText("");
-        } else {
-            cbRollon.setSelected(true);
-            txtRollon.setText(entry.rollon);
-        }
-        if(entry.die == null) {
-            cbDice.setSelected(false);
-            txtAmount.setText("1");
-            txtSides.setText("1");
-            txtModifier.setText("0");
-        } else {
-            cbDice.setSelected(true);
-            txtAmount.setText(""+entry.die.amount);
-            txtSides.setText(""+entry.die.sides);
-            txtModifier.setText(""+entry.die.modifier);
-        }
-        if(entry.unit == null) {
-            cbUnit.setSelected(false);
-            txtUnit.setText("");
-        } else {
-            cbUnit.setSelected(true);
-            txtUnit.setText(entry.unit);
-        }
-        if(entry.appears == 1) {
-            cbAppears.setSelected(false);
-            txtAppears.setText("");
-        } else {
-            cbAppears.setSelected(true);
-            txtAppears.setText(""+entry.appears);
+            btnClearActionPerformed(null);
         }
     }//GEN-LAST:event_lstItemsValueChanged
 

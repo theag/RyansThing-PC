@@ -69,14 +69,9 @@ public class Table {
         return rv;
     }
     
-    public String getRollon() {
-        String rv = "";
-        for(String t : rollon) {
-            if(rv.length() > 0) {
-                rv += ",";
-            }
-            rv += t;
-        }
+    public String[] getRollon() {
+        String[] rv = new String[rollon.size()];
+        rollon.toArray(rv);
         return rv;
     }
     

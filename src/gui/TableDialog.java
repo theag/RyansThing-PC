@@ -6,7 +6,10 @@
 
 package gui;
 
+import data.Table;
+import data.WriteTable;
 import java.io.File;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -17,6 +20,8 @@ public class TableDialog extends javax.swing.JDialog {
     public static boolean showDialog(java.awt.Frame parent, File file) {
         TableDialog td = new TableDialog(parent);
         if(file == null) {
+            td.lblFilename.setVisible(false);
+            td.txtFilename.setVisible(false);
             td.btnAddTableActionPerformed(null);
             td.setTitle("New Table File");
         } else {
@@ -24,7 +29,14 @@ public class TableDialog extends javax.swing.JDialog {
         }
         td.setVisible(true);
         if(td.saved) {
-            //do saving here
+            Table[] tables = new Table[td.tabsMain.getTabCount()];
+            for(int i = 0; i < tables.length; i++) {
+                tables[i] = ((TablePanel)td.tabsMain.getComponentAt(i)).getTable();
+            }
+            if(file == null) {
+                file = new File(IniFile.getInstance().tables, td.txtFilename.getText().trim()+".xml");
+            }
+            WriteTable.write(file, tables);
         }
         return td.saved;
     }
@@ -54,6 +66,8 @@ public class TableDialog extends javax.swing.JDialog {
         btnAddTable = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
+        lblFilename = new javax.swing.JLabel();
+        txtFilename = new javax.swing.JTextField();
 
         btnAddTable.setText("Add Table");
         btnAddTable.addActionListener(new java.awt.event.ActionListener() {
@@ -76,6 +90,8 @@ public class TableDialog extends javax.swing.JDialog {
             }
         });
 
+        lblFilename.setText("Filename:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -84,21 +100,30 @@ public class TableDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnAddTable)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnAddTable)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblFilename)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtFilename, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnSave)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCancel)))
-                .addContainerGap(378, Short.MAX_VALUE))
+                        .addComponent(btnCancel)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnAddTable)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAddTable)
+                    .addComponent(lblFilename)
+                    .addComponent(txtFilename, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(tabsMain, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addComponent(tabsMain, javax.swing.GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSave)
                     .addComponent(btnCancel))
@@ -124,6 +149,18 @@ public class TableDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_btnAddTableActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        if(txtFilename.isVisible()) {
+            String filename = txtFilename.getText().trim();
+            if(filename.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "You need to name the tables file.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            File f = new File(IniFile.getInstance().tables,filename+".xml");
+            if(f.exists()) {
+                JOptionPane.showMessageDialog(this, "Sorry, that file already exists. Choose another.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
         saved = true;
         setVisible(false);
     }//GEN-LAST:event_btnSaveActionPerformed
@@ -136,7 +173,9 @@ public class TableDialog extends javax.swing.JDialog {
     private javax.swing.JButton btnAddTable;
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnSave;
+    private javax.swing.JLabel lblFilename;
     private javax.swing.JTabbedPane tabsMain;
+    private javax.swing.JTextField txtFilename;
     // End of variables declaration//GEN-END:variables
 
     private void tpNameChanged(String name) {

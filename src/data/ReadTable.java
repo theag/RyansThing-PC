@@ -24,9 +24,7 @@ public class ReadTable {
     
     private static final DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
     private static DocumentBuilder dBuilder = null;
-	
 
-    
     public static void read(File file, ArrayList<Table> tables) {
         if(dBuilder == null) {
             try {

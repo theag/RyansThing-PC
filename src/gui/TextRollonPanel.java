@@ -5,17 +5,23 @@
  */
 package gui;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  *
  * @author nbp184
  */
 public class TextRollonPanel extends javax.swing.JPanel {
+    
+    final ArrayList<String> rollon;
 
     /**
      * Creates new form TextRollonPanel
      * @param text
+     * @param rollon
      */
-    public TextRollonPanel(String text, String rollon) {
+    public TextRollonPanel(String text, String[] rollon) {
         initComponents();
         if(text == null) {
             cbText.setSelected(false);
@@ -24,12 +30,10 @@ public class TextRollonPanel extends javax.swing.JPanel {
             cbText.setSelected(true);
             txtText.setText(text);
         }
-        if(rollon == null) {
-            cbRollon.setSelected(false);
-            txtRollon.setText("");
-        } else {
-            cbRollon.setSelected(true);
-            txtRollon.setText(rollon);
+        this.rollon = new ArrayList<>();
+        if(rollon != null) {
+            this.rollon.addAll(Arrays.asList(rollon));
+            lstRollon.setListData(rollon);
         }
     }
 
@@ -44,12 +48,53 @@ public class TextRollonPanel extends javax.swing.JPanel {
 
         cbText = new javax.swing.JCheckBox();
         txtText = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        lstRollon = new javax.swing.JList();
         txtRollon = new javax.swing.JTextField();
-        cbRollon = new javax.swing.JCheckBox();
+        jLabel1 = new javax.swing.JLabel();
+        btnAdd = new javax.swing.JButton();
+        btnSave = new javax.swing.JButton();
+        btnRemove = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(255, 255, 255));
+
+        cbText.setBackground(new java.awt.Color(255, 255, 255));
         cbText.setText("text");
 
-        cbRollon.setText("roll on");
+        lstRollon.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        lstRollon.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                lstRollonValueChanged(evt);
+            }
+        });
+        jScrollPane1.setViewportView(lstRollon);
+
+        jLabel1.setText("Table to roll on:");
+
+        btnAdd.setText("Add New");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
+
+        btnSave.setText("Save Changes");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+
+        btnRemove.setText("Remove");
+        btnRemove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -59,13 +104,24 @@ public class TextRollonPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(cbRollon)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtRollon, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtRollon))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnAdd)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnSave)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnRemove)
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(cbText)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtText)))
+                        .addComponent(txtText, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -75,19 +131,68 @@ public class TextRollonPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbText)
                     .addComponent(txtText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbRollon)
-                    .addComponent(txtRollon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(txtRollon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnSave)
+                            .addComponent(btnAdd)
+                            .addComponent(btnRemove))))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        rollon.add(txtRollon.getText().trim());
+        txtRollon.setText("");
+        lstRollon.setListData(rollon.toArray());
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        if(lstRollon.getSelectedIndex() >= 0) {
+            rollon.set(lstRollon.getSelectedIndex(), txtRollon.getText().trim());
+            lstRollon.setListData(rollon.toArray());
+        }
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
+        if(lstRollon.getSelectedIndex() >= 0) {
+            rollon.remove(lstRollon.getSelectedIndex());
+            lstRollon.setListData(rollon.toArray());
+        }
+    }//GEN-LAST:event_btnRemoveActionPerformed
+
+    private void lstRollonValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstRollonValueChanged
+        if(lstRollon.getSelectedIndex() >= 0) {
+            txtRollon.setText(lstRollon.getSelectedValue().toString());
+        } else {
+            txtRollon.setText("");
+        }
+    }//GEN-LAST:event_lstRollonValueChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox cbRollon;
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnRemove;
+    private javax.swing.JButton btnSave;
     private javax.swing.JCheckBox cbText;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JList lstRollon;
     private javax.swing.JTextField txtRollon;
     private javax.swing.JTextField txtText;
     // End of variables declaration//GEN-END:variables
+
+    String getTableText() {
+        if(cbText.isSelected()) {
+            return txtText.getText().trim();
+        } else {
+            return null;
+        }
+    }
 }
