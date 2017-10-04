@@ -34,6 +34,8 @@ public class TextRollonPanel extends javax.swing.JPanel {
         if(rollon != null) {
             this.rollon.addAll(Arrays.asList(rollon));
             lstRollon.setListData(rollon);
+        } else {
+            lstRollon.setListData(new String[0]);
         }
     }
 

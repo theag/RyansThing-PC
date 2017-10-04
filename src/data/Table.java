@@ -46,8 +46,14 @@ public class Table {
         if(!entries.isEmpty()) {
             return entries.get(rand.nextInt(entries.size())).getText();
         } else {
-            String rv = text;
+            String rv = "";
+            if(text != null) {
+                rv += text;
+            }
             for(String t : rollon) {
+                if(!rv.isEmpty()) {
+                    rv += " ";
+                }
                 rv += "<" +t +">";
             }
             return rv;

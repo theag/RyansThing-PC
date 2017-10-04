@@ -57,9 +57,11 @@ public class WriteTable {
                         item.appendChild(subitem);
                     }
                     if(te.rollon != null) {
-                        subitem = doc.createElement("rollon");
-                        subitem.setTextContent(te.rollon);
-                        item.appendChild(subitem);
+                        for(String r : te.rollon) {
+                            subitem = doc.createElement("rollon");
+                            subitem.setTextContent(r);
+                            item.appendChild(subitem);
+                        }
                     }
                     if(te.die != null) {
                         subitem = doc.createElement("dice");
@@ -84,6 +86,7 @@ public class WriteTable {
                         subitem.setTextContent(""+te.appears);
                         item.appendChild(subitem);
                     }
+                    table.appendChild(item);
                 }
             } else {
                 if(t.text != null) {

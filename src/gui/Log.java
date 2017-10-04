@@ -10,20 +10,16 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Calendar;
+import javax.swing.AbstractListModel;
 import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
 
 /**
  *
  * @author nbp184
  */
-public class Log {
-    
-    private static final String newLine = System.getProperty("line.separator");
-    
-    private final JTextArea txtLog;
-    private final File file;
+public class Log extends AbstractListModel {
     
     public static String getToday() {
         Calendar today = Calendar.getInstance();
@@ -55,23 +51,22 @@ public class Log {
         return rv;
     }
     
-    public Log(JTextArea txtLog) {
-        this.txtLog = txtLog;
+    private final ArrayList<String> data;
+    private final File file;
+    
+    public Log() {
+        data = new ArrayList<>();
         file = new File(IniFile.getInstance().logs +"log-" +getToday() +"-" +getRandom() +".txt");
     }
     
-    public Log(JTextArea txtLog, File file) {
-        this.txtLog = txtLog;
+    public Log(File file) {
+        data = new ArrayList<>();
         this.file = file;
-        String text = "";
         try {
             BufferedReader fileIn = new BufferedReader(new FileReader(file));
             String line = fileIn.readLine();
             while(line != null) {
-                if(!text.isEmpty()) {
-                    text += "\n";
-                }
-                text += line;
+                data.add(line);
                 line = fileIn.readLine();
             }
             fileIn.close();
@@ -80,7 +75,6 @@ public class Log {
             System.out.println(ex.getLocalizedMessage());
             JOptionPane.showMessageDialog(null, "Error reading log.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        txtLog.setText(text);
     }
     
     public String getLabel() {
@@ -88,19 +82,18 @@ public class Log {
     }
     
     public void addText(String text) {
-        if(txtLog.getText().isEmpty()) {
-            txtLog.setText(text);
-        } else {
-            txtLog.setText(txtLog.getText() +"\n" +text);
-        }
+        data.add(text);
+        this.fireIntervalAdded(this, data.size()-1, data.size());
         save();
     }
     
     public void save() {
-        if(!txtLog.getText().trim().isEmpty()) {
+        if(!data.isEmpty()) {
             try {
                 PrintWriter outFile = new PrintWriter(file);
-                outFile.println(getFixedText());
+                for(String s : data) {
+                    outFile.println(s);
+                }
                 outFile.close();
             } catch (IOException ex) {
                 ex.printStackTrace(System.out);
@@ -110,12 +103,18 @@ public class Log {
         }
     }
 
-    private String getFixedText() {
-        return txtLog.getText().replace("\n", newLine);
-    }
-
     public String getFilename() {
         return file.getName();
+    }
+
+    @Override
+    public int getSize() {
+        return data.size();
+    }
+
+    @Override
+    public String getElementAt(int index) {
+        return data.get(index);
     }
            
 }

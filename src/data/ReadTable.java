@@ -40,7 +40,7 @@ public class ReadTable {
             NodeList tableNodes = doc.getElementsByTagName("table");
             Table newTable;
             String text;
-            String rollon;
+            String[] rollon;
             int amount, sides, modifier;
             String unit;
             int appears;
@@ -61,12 +61,9 @@ public class ReadTable {
                     }
                     children = ele.getElementsByTagName("rollon");
                     if(children.getLength() > 0) {
-                        rollon = "";
-                        for(int k = 0; k < children.getLength(); k++) {
-                            if(!rollon.isEmpty()) {
-                                rollon += ",";
-                            }
-                            rollon += children.item(k).getTextContent();
+                        rollon = new String[children.getLength()];
+                        for(int r = 0; r < rollon.length; r++) {
+                            rollon[r] = children.item(r).getTextContent();
                         }
                     } else {
                         rollon = null;
@@ -100,7 +97,10 @@ public class ReadTable {
                     }
                 }
                 if(items.getLength() == 0) {
-                    newTable.setText(ele.getElementsByTagName("text").item(0).getTextContent());
+                    children = ele.getElementsByTagName("text");
+                    if(children.getLength() > 0) {
+                        newTable.setText(ele.getElementsByTagName("text").item(0).getTextContent());
+                    }
                     items = ele.getElementsByTagName("rollon");
                     for(int j = 0; j < items.getLength(); j++) {
                         newTable.addRollon(items.item(j).getTextContent());

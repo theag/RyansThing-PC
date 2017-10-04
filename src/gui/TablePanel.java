@@ -96,7 +96,7 @@ public class TablePanel extends javax.swing.JPanel {
         );
         pnlTypeLayout.setVerticalGroup(
             pnlTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 393, Short.MAX_VALUE)
+            .addGap(0, 427, Short.MAX_VALUE)
         );
 
         btnUpdateTab.setText("Update Tab");
@@ -147,10 +147,10 @@ public class TablePanel extends javax.swing.JPanel {
                     .addComponent(rbItems)
                     .addComponent(rbTextRollon))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pnlType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(pnlType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnDeleteTable)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -222,6 +222,8 @@ public class TablePanel extends javax.swing.JPanel {
             for(String s : trp.rollon) {
                 rv.addRollon(s);
             }
+        } else {
+            System.out.println("nope");
         }
         return rv;
     }

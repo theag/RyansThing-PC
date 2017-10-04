@@ -28,7 +28,8 @@ public class MainFrame extends javax.swing.JFrame {
     private ArrayList<Table> tables;
     private JournalCalendar jc;
     private InitiativeTracker it;
-    private JFileChooser fc;
+    private JFileChooser fcLogs;
+    private JFileChooser fcTables;
     
     /**
      * Creates new form MainFrame
@@ -37,13 +38,14 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         try {
-            log = new Log(txtLog);
+            log = new Log();
+            lstLog.setModel(log);
             lblLog.setText(log.getLabel());
             loadTables();
             jc = new JournalCalendar();
             it = new InitiativeTracker();
-            fc = new JFileChooser(new File(IniFile.getInstance().logs));
-            fc.setFileFilter(new FileFilter() {
+            fcLogs = new JFileChooser(new File(IniFile.getInstance().logs));
+            fcLogs.setFileFilter(new FileFilter() {
                 @Override
                 public boolean accept(File f) {
                     return f.isDirectory() || f.getName().endsWith(".txt");
@@ -51,6 +53,19 @@ public class MainFrame extends javax.swing.JFrame {
                 @Override
                 public String getDescription() {
                     return "Text files (*.txt)";
+                }
+            });
+            fcTables = new JFileChooser(new File(IniFile.getInstance().tables));
+            fcTables.setFileFilter(new FileFilter() {
+
+                @Override
+                public boolean accept(File f) {
+                    return f.isDirectory() || f.getName().endsWith(".xml");
+                }
+
+                @Override
+                public String getDescription() {
+                    return "XML files (*.xml)";
                 }
             });
             
@@ -69,8 +84,6 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane2 = new javax.swing.JScrollPane();
-        txtLog = new javax.swing.JTextArea();
         lblLog = new javax.swing.JLabel();
         txtTableSearch = new javax.swing.JTextField();
         btnCurrentTime = new javax.swing.JButton();
@@ -95,6 +108,8 @@ public class MainFrame extends javax.swing.JFrame {
         lstTables = new javax.swing.JList();
         btnCleanUp = new javax.swing.JButton();
         btnNewLog = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        lstLog = new javax.swing.JList();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -102,11 +117,6 @@ public class MainFrame extends javax.swing.JFrame {
                 formWindowClosing(evt);
             }
         });
-
-        txtLog.setColumns(20);
-        txtLog.setLineWrap(true);
-        txtLog.setRows(5);
-        jScrollPane2.setViewportView(txtLog);
 
         lblLog.setText("jLabel1");
 
@@ -249,6 +259,17 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        lstLog.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        lstLog.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        lstLog.setCellRenderer(new LogCellRenderer());
+        lstLog.setSelectionBackground(new java.awt.Color(204, 204, 204));
+        lstLog.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        jScrollPane3.setViewportView(lstLog);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -262,19 +283,6 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(btnAddTable))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 560, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblLog)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnNewLog)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnLoadLog)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnCleanUp)))
-                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -297,7 +305,7 @@ public class MainFrame extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(87, 87, 87)
                                 .addComponent(jLabel1)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnAddYear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnCurrentTime, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -305,7 +313,20 @@ public class MainFrame extends javax.swing.JFrame {
                             .addComponent(bntAddDay, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnAddWeek, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnAddSeason, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(46, 46, 46))))
+                        .addGap(46, 46, 46))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblLog)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnNewLog)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnLoadLog)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnCleanUp)))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -314,7 +335,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(txtTableSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 514, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -345,8 +366,8 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(btnAddSeason)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAddYear)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLoadLog)
@@ -449,11 +470,12 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddRoundActionPerformed
 
     private void btnLoadLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadLogActionPerformed
-        int result = fc.showOpenDialog(this);
+        int result = fcLogs.showOpenDialog(this);
         if(result == JFileChooser.APPROVE_OPTION) {
-            log = new Log(txtLog, fc.getSelectedFile());
+            log = new Log(fcLogs.getSelectedFile());
+            lstLog.setModel(log);
             try {
-                LogLoad ll = LogLoad.loadLog(fc.getSelectedFile());
+                LogLoad ll = LogLoad.loadLog(fcLogs.getSelectedFile());
                 it = ll.initiativeTracker;
                 jc = ll.journalCalendar;
             } catch (IOException ex) {
@@ -479,7 +501,12 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_lstTablesMouseClicked
 
     private void btnEditTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditTableActionPerformed
-        // TODO add your handling code here:
+        int result = fcTables.showOpenDialog(this);
+        if(result == JFileChooser.APPROVE_OPTION) {
+            if(TableDialog.showDialog(this, fcTables.getSelectedFile())) {
+                loadTables();
+            }
+        }
     }//GEN-LAST:event_btnEditTableActionPerformed
 
     private void btnCleanUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCleanUpActionPerformed
@@ -488,7 +515,8 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void btnNewLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewLogActionPerformed
         log.save();
-        log = new Log(txtLog);
+        log = new Log();
+        lstLog.setModel(log);
         lblLog.setText(log.getLabel());
     }//GEN-LAST:event_btnNewLogActionPerformed
 
@@ -550,10 +578,10 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lblLog;
+    private javax.swing.JList lstLog;
     private javax.swing.JList lstTables;
-    private javax.swing.JTextArea txtLog;
     private javax.swing.JTextField txtTableSearch;
     // End of variables declaration//GEN-END:variables
 
@@ -576,7 +604,7 @@ public class MainFrame extends javax.swing.JFrame {
                 result = result.replace("<" +tName +">", "(" +tName +")");
             }
         }
-        return result;
+        return result.trim();
     }
 
     private void loadTables() {

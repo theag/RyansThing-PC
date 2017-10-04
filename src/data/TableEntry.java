@@ -6,7 +6,6 @@
 package data;
 
 import java.util.Objects;
-import java.util.StringTokenizer;
 
 /**
  *
@@ -15,12 +14,12 @@ import java.util.StringTokenizer;
 public class TableEntry {
     
     public String text;
-    public String rollon;
+    public String[] rollon;
     public Dice die;
     public String unit;
     public int appears;
     
-    public TableEntry(String text, String rollon, Dice die, String unit) {
+    public TableEntry(String text, String[] rollon, Dice die, String unit) {
         this.text = text;
         this.rollon = rollon;
         this.die = die;
@@ -41,10 +40,9 @@ public class TableEntry {
             if(!rv.isEmpty()) {
                 rv += " ";
             }
-            StringTokenizer tokens = new StringTokenizer(rollon, ",");
-            rv += "<" +tokens.nextToken() +"> ";
-            while(tokens.hasMoreTokens()) {
-                rv += "and <" +tokens.nextToken() +"> ";
+            rv += "<" +rollon[0] +"> ";
+            for(int i = 1; i < rollon.length; i++) {
+                rv += " <" +rollon[i] +">";
             }
         }
         if(die != null) {
@@ -57,7 +55,12 @@ public class TableEntry {
     }
 
     public TableEntry copy() {
-        return new TableEntry(text, rollon, die, unit);
+        String[] rCopy = null;
+        if(rollon != null) {
+            rCopy= new String[rollon.length];
+            System.arraycopy(rollon, 0, rCopy, 0, rollon.length);
+        }
+        return new TableEntry(text, rCopy, die, unit);
     }
 
     @Override
@@ -72,27 +75,7 @@ public class TableEntry {
     
     @Override
     public String toString() {
-        String rv = "";
-        if(text != null) {
-            rv += text;
-        }
-        if(rollon != null) {
-            if(!rv.isEmpty()) {
-                rv += " ";
-            }
-            StringTokenizer tokens = new StringTokenizer(rollon, ",");
-            rv += "<" +tokens.nextToken() +"> ";
-            while(tokens.hasMoreTokens()) {
-                rv += "and <" +tokens.nextToken() +"> ";
-            }
-        }
-        if(die != null) {
-            rv += die.toString() + " ";
-        }
-        if(unit != null) {
-            rv += unit;
-        }
-        return rv;
+        return getText();
     }
     
 }

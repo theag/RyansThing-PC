@@ -6,9 +6,11 @@
 
 package gui;
 
+import data.ReadTable;
 import data.Table;
 import data.WriteTable;
 import java.io.File;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -20,12 +22,32 @@ public class TableDialog extends javax.swing.JDialog {
     public static boolean showDialog(java.awt.Frame parent, File file) {
         TableDialog td = new TableDialog(parent);
         if(file == null) {
-            td.lblFilename.setVisible(false);
-            td.txtFilename.setVisible(false);
             td.btnAddTableActionPerformed(null);
             td.setTitle("New Table File");
+            td.btnDelete.setVisible(false);
         } else {
-            td.setTitle("Editing: " +file.getName().replace(".xml", ""));
+            td.txtFilename.setText(file.getName().replace(".xml", ""));
+            td.setTitle("Editing: " +td.txtFilename.getText());
+            td.lblFilename.setVisible(false);
+            td.txtFilename.setVisible(false);
+            //read file
+            ArrayList<Table> tables = new ArrayList<>();
+            ReadTable.read(file, tables);
+            TablePanel tp;
+            for(Table t : tables) {
+                tp = new TablePanel(t);
+                tp.addTablePanelListener(new TablePanelListener() {
+                    @Override
+                    public void nameChanged(String name) {
+                        td.tpNameChanged(name);
+                    }
+                    @Override
+                    public void removeMe() {
+                        td.tpRemoveMe();
+                    }
+                });
+                td.tabsMain.add(t.name, tp);
+            }
         }
         td.setVisible(true);
         if(td.saved) {
@@ -37,11 +59,16 @@ public class TableDialog extends javax.swing.JDialog {
                 file = new File(IniFile.getInstance().tables, td.txtFilename.getText().trim()+".xml");
             }
             WriteTable.write(file, tables);
+        } else if(td.deleted) {
+            file.delete();
         }
-        return td.saved;
+        boolean rv = td.saved || td.deleted;
+        td.dispose();
+        return rv;
     }
     
     private boolean saved;
+    private boolean deleted;
     
     /** Creates new form TableDialog
      * @param parent
@@ -51,6 +78,7 @@ public class TableDialog extends javax.swing.JDialog {
         initComponents();
         setLocationRelativeTo(parent);
         saved = false;
+        deleted = false;
     }
 
     /** This method is called from within the constructor to
@@ -68,6 +96,7 @@ public class TableDialog extends javax.swing.JDialog {
         btnCancel = new javax.swing.JButton();
         lblFilename = new javax.swing.JLabel();
         txtFilename = new javax.swing.JTextField();
+        btnDelete = new javax.swing.JButton();
 
         btnAddTable.setText("Add Table");
         btnAddTable.addActionListener(new java.awt.event.ActionListener() {
@@ -92,6 +121,13 @@ public class TableDialog extends javax.swing.JDialog {
 
         lblFilename.setText("Filename:");
 
+        btnDelete.setText("Delete File");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -110,7 +146,8 @@ public class TableDialog extends javax.swing.JDialog {
                         .addComponent(btnSave)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCancel)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnDelete)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -122,11 +159,12 @@ public class TableDialog extends javax.swing.JDialog {
                     .addComponent(lblFilename)
                     .addComponent(txtFilename, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(tabsMain, javax.swing.GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE)
+                .addComponent(tabsMain, javax.swing.GroupLayout.DEFAULT_SIZE, 603, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSave)
-                    .addComponent(btnCancel))
+                    .addComponent(btnCancel)
+                    .addComponent(btnDelete))
                 .addContainerGap())
         );
 
@@ -146,6 +184,7 @@ public class TableDialog extends javax.swing.JDialog {
             }
         });
         tabsMain.add("New Table", tp);
+        tabsMain.setSelectedComponent(tp);
     }//GEN-LAST:event_btnAddTableActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
@@ -169,9 +208,18 @@ public class TableDialog extends javax.swing.JDialog {
         setVisible(false);
     }//GEN-LAST:event_btnCancelActionPerformed
 
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        int result = JOptionPane.showConfirmDialog(this, "Are you sure you wish to delete this entire table file?\nIt CANNOT be undone.", "Delete", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if(result == JOptionPane.YES_OPTION) {
+            deleted = true;
+            setVisible(false);
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddTable;
     private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnSave;
     private javax.swing.JLabel lblFilename;
     private javax.swing.JTabbedPane tabsMain;

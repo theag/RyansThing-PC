@@ -59,6 +59,7 @@ public class CleanUpDialog extends javax.swing.JDialog {
         rbWeek = new javax.swing.JRadioButton();
         rbAll = new javax.swing.JRadioButton();
         btnCleanup = new javax.swing.JButton();
+        btnClose = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Clean Up Logs");
@@ -99,6 +100,13 @@ public class CleanUpDialog extends javax.swing.JDialog {
             }
         });
 
+        btnClose.setText("Close");
+        btnClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCloseActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -118,7 +126,8 @@ public class CleanUpDialog extends javax.swing.JDialog {
                             .addComponent(btnCleanup)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnDelete)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnClose)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -141,7 +150,9 @@ public class CleanUpDialog extends javax.swing.JDialog {
                         .addComponent(btnCleanup)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnDelete)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnDelete)
+                    .addComponent(btnClose))
                 .addContainerGap())
         );
 
@@ -169,8 +180,14 @@ public class CleanUpDialog extends javax.swing.JDialog {
         model.cleanUp(calendar.getTimeInMillis(), diff);
     }//GEN-LAST:event_btnCleanupActionPerformed
 
+    private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
+        this.setVisible(false);
+        this.dispose();
+    }//GEN-LAST:event_btnCloseActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCleanup;
+    private javax.swing.JButton btnClose;
     private javax.swing.JButton btnDelete;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel1;
