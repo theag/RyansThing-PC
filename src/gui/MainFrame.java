@@ -104,6 +104,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         txtLog.setColumns(20);
+        txtLog.setLineWrap(true);
         txtLog.setRows(5);
         jScrollPane2.setViewportView(txtLog);
 
@@ -351,10 +352,10 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(btnLoadLog)
                     .addComponent(lblLog)
                     .addComponent(btnEditTable)
-                    .addComponent(btnAddTable))
+                    .addComponent(btnAddTable)
                     .addComponent(btnCleanUp)
                     .addComponent(btnNewLog))
-                .addGap(6, 6, 6)
+                .addGap(6, 6, 6))
         );
 
         pack();
