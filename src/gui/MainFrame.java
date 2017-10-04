@@ -472,7 +472,8 @@ public class MainFrame extends javax.swing.JFrame {
     private void lstTablesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lstTablesMouseClicked
         if(evt.getClickCount() == 2) {
             javax.swing.JList lst = (javax.swing.JList)evt.getSource();
-            log.addText(doRoll((Table)lst.getSelectedValue()));
+            Table tbl = (Table)lst.getSelectedValue();
+            log.addText(tbl.name +": " +doRoll(tbl));
         }
     }//GEN-LAST:event_lstTablesMouseClicked
 
